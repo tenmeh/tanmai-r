@@ -94,7 +94,7 @@ evaluate.tanmai_game <- function(x, movetime = 300L, engine_path = NULL,
     # principal variation and would leave this NA - which would then propagate
     # into cp_loss and class and quietly blank out the most important ply in
     # the game, the one that ended it. A mate is not an unknown evaluation.
-    status <- position_status(ctx, fens[i])
+    status <- position_status(fens[i])
     if (!identical(status, "ongoing")) {
       cp_stm[i] <- if (identical(status, "checkmate")) -MATE_CP else 0
       next

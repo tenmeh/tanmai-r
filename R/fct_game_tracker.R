@@ -434,7 +434,8 @@ game_turning_points <- function(game, min_loss = 100, n = 5L) {
 #' Geometry for the evaluation graph
 #'
 #' The arithmetic behind the graph, with no drawing: where each point sits and
-#' what shapes join them. [eval_graph_svg()] turns this into an SVG. They are
+#' what shapes join them. Rendering that into a picture is the caller's job.
+#' They are
 #' split so this layer stays free of any UI toolkit - see the note in
 #' `test-core-boundary.R`.
 #'

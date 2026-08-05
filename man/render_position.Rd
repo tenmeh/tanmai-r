@@ -4,7 +4,11 @@
 \alias{render_position}
 \title{Render an 8x8 board with pieces placed from a symbol grid}
 \usage{
-render_position(symbols, size = 512L, set_dir = app_sys("svg"))
+render_position(
+  symbols,
+  size = 512L,
+  set_dir = system.file("svg", package = "tanmai")
+)
 }
 \arguments{
 \item{symbols}{Character vector of 64 symbols, row-major, top row first,
@@ -20,4 +24,9 @@ A magick image of the rendered board.
 }
 \description{
 Render an 8x8 board with pieces placed from a symbol grid
+}
+\examples{
+board <- render_position(fen_to_symbols(
+  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+), size = 256)
 }

@@ -21,7 +21,7 @@ START_SYMBOLS <- c(
 #' @param set_dir Directory holding the 12 piece images (defaults to bundled
 #'   cburnett).
 #' @return The file path of the matching image (e.g. `wN.svg` for "N").
-piece_svg_path <- function(symbol, set_dir = app_sys("svg")) {
+piece_svg_path <- function(symbol, set_dir = system.file("svg", package = "tanmai")) {
   color <- if (symbol == toupper(symbol)) "w" else "b"
   base <- paste0(color, toupper(symbol))
   ext <- piece_set_ext(set_dir)
@@ -56,7 +56,12 @@ read_piece_image <- function(path, px) {
 #' @param set_dir Directory holding the 12 piece SVGs (defaults to bundled
 #'   cburnett).
 #' @return A magick image of the rendered board.
-render_position <- function(symbols, size = 512L, set_dir = app_sys("svg")) {
+#' @examples
+#' board <- render_position(fen_to_symbols(
+#'   "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+#' ), size = 256)
+#' @export
+render_position <- function(symbols, size = 512L, set_dir = system.file("svg", package = "tanmai")) {
   sq <- as.integer(size / 8)
   board <- image_blank(size, size, color = LIGHT_SQ)
   # paint dark squares

@@ -1,26 +1,28 @@
 Package: tanmai
-Title: Chess Board Screenshot to Best Move
-Version: 1.6.0
-Authors@R: person("tenmeh", email = "81738153+tenmeh@users.noreply.github.com", role = c("aut", "cre"))
-Description: A golem Shiny app that reads a chess board screenshot (drag-drop
-    or clipboard paste), recognizes the position with template matching, and
-    suggests the best move via a local Stockfish engine.
-URL: https://tenmeh.github.io/tanmai/, https://github.com/tenmeh/tanmai
-BugReports: https://github.com/tenmeh/tanmai/issues
-License: AGPL (>= 3)
+Title: Read Chess Positions from Screenshots, FEN, PGN and Video
+Version: 0.1.0
+Authors@R: person("Tanmay", "Chanda", email = "81738153+tenmeh@users.noreply.github.com", role = c("aut", "cre"))
+Description: Reads a chess position from a screenshot of a board, a FEN
+    string, a PGN file, or a recording of a game being played, and returns it
+    as a tidy data frame - one row per position, or one row per ply for a
+    game. Recognition reports how confident it is rather than silently
+    guessing. With a 'Stockfish' engine installed, games can additionally be
+    evaluated, scored for accuracy, and searched for the moves that decided
+    them; without one, everything that reads a position still works.
+URL: https://github.com/tenmeh/tanmai-r
+BugReports: https://github.com/tenmeh/tanmai-r/issues
+License: GPL-3
 Language: en-US
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 Imports:
-    bslib,
-    shiny,
-    golem,
     magick,
     rsvg,
-    processx,
     jsonlite,
     V8,
+    processx,
+    graphics,
+    grDevices,
     tools,
     utils,
     stats
@@ -28,9 +30,9 @@ Suggests:
     withr,
     knitr,
     rmarkdown,
-    pkgload,
-    here,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0
 VignetteBuilder: knitr
+SystemRequirements: Stockfish (optional, for evaluate() and accuracy());
+    ffmpeg (optional, for read_video() on video formats)

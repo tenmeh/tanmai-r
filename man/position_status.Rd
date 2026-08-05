@@ -4,11 +4,9 @@
 \alias{position_status}
 \title{Whether a position is over, and how}
 \usage{
-position_status(ctx, fen)
+position_status(fen)
 }
 \arguments{
-\item{ctx}{A chess.js V8 context from \code{\link[=new_chess_context]{new_chess_context()}}.}
-
 \item{fen}{A FEN string.}
 }
 \value{
@@ -21,6 +19,6 @@ does have a perfectly definite value. Asking chess.js is the only way to
 tell a checkmate from a stalemate, and the difference is the whole game.
 }
 \examples{
-ctx <- new_chess_context()
-position_status(ctx, "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3")
+position_status("rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3")
+position_status("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 }

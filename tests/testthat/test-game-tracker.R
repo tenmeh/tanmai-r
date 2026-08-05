@@ -270,36 +270,6 @@ test_that("positions are compared without the move clocks getting in the way", {
   expect_false(same_position(NA_character_, START))
 })
 
-test_that("the eval graph plots one point per position and can be clicked", {
-  svg <- as.character(eval_graph_svg(c(0, 50, -300, -280), click_input = "live-goto"))
-
-  expect_match(svg, "<svg")
-  expect_match(svg, "polyline")
-  # One click target per position, each reporting its own ply index.
-  expect_equal(lengths(regmatches(svg, gregexpr("cv-graph-hit", svg))), 4L)
-  expect_match(svg, "\\{ply: 0,")
-  expect_match(svg, "\\{ply: 3,")
-  expect_match(svg, "live-goto")
-
-  # Losing badly must sit lower on the graph than being level. Read the curve
-  # itself, not the shaded band, which carries two extra baseline corners.
-  line <- regmatches(svg, regexpr("<polyline points=\"[^\"]+\"", svg))
-  xy <- as.numeric(strsplit(sub(".*points=\"", "", sub("\"$", "", line)), "[ ,]")[[1]])
-  ys <- xy[seq(2, length(xy), by = 2)]
-
-  expect_length(ys, 4)
-  expect_lt(ys[2], ys[1]) # +0.50 sits above level
-  expect_gt(ys[3], ys[1]) # -3.00 sits below it
-  expect_lt(ys[4], ys[3]) # and -2.80 recovers slightly
-
-  # Nothing measured yet, nothing drawn - rather than a flat line implying
-  # the game is level.
-  expect_null(eval_graph_svg(numeric(0)))
-  expect_null(eval_graph_svg(c(NA_real_, NA_real_)))
-  # A gap mid-game holds the last known value instead of breaking the line.
-  expect_match(as.character(eval_graph_svg(c(0, NA, 100))), "polyline")
-})
-
 test_that("move quality follows the usual thresholds", {
   expect_equal(move_quality(c(0, 60, 140, 400)), c("ok", "inaccuracy", "mistake", "blunder"))
   expect_equal(move_quality(NA_real_), "ok")

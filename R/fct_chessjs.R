@@ -11,7 +11,7 @@
 new_chess_context <- function() {
   ctx <- V8::v8()
   ctx$eval("var module = {exports: {}}; var exports = module.exports;")
-  invisible(ctx$source(app_sys("js/chess.js")))
+  invisible(ctx$source(system.file("js", "chess.js", package = "tanmai")))
   ctx$eval("var ChessCtor = module.exports.Chess;")
   ctx$eval("var validateFenJS = module.exports.validateFen;")
   ctx
@@ -107,14 +107,14 @@ fen_move_to_san <- function(ctx, fen, uci_move) {
 #' does have a perfectly definite value. Asking chess.js is the only way to
 #' tell a checkmate from a stalemate, and the difference is the whole game.
 #'
-#' @param ctx A chess.js V8 context from [new_chess_context()].
 #' @param fen A FEN string.
 #' @return One of "checkmate", "stalemate", "draw" or "ongoing".
 #' @examples
-#' ctx <- new_chess_context()
-#' position_status(ctx, "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3")
+#' position_status("rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3")
+#' position_status("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 #' @export
-position_status <- function(ctx, fen) {
+position_status <- function(fen) {
+  ctx <- chess_ctx()
   ctx$assign("fenStatus", fen)
   res <- ctx$eval("(function(){
     try {

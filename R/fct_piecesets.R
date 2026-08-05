@@ -83,7 +83,7 @@ piece_sets_dir <- function() {
 #' @return The directory path, or `NULL` if the set isn't available locally.
 piece_set_path <- function(name) {
   if (name == "cburnett") {
-    return(app_sys("svg"))
+    return(system.file("svg", package = "tanmai"))
   }
   dir <- file.path(piece_sets_dir(), name)
   if (!is.null(piece_set_ext(dir))) dir else NULL
@@ -157,7 +157,7 @@ available_piece_sets <- function() {
 #' @return The template-library RDS path for that set.
 set_templates_path <- function(name) {
   if (name == "cburnett") {
-    return(app_sys("app", "templates.rds"))
+    return(system.file("templates.rds", package = "tanmai"))
   }
   file.path(piece_sets_dir(), name, "templates.rds")
 }
@@ -210,4 +210,20 @@ setup_piece_sets <- function(progress = NULL) {
     ready[i] <- fetch_piece_set(name) && build_set_templates(name)
   }
   ready
+}
+
+#' Path for user-calibrated ("custom") templates
+#'
+#' Deliberately does not create the directory. This is called whenever template
+#' libraries are *loaded*, and creating a directory in the user's config space
+#' as a side effect of reading would be wrong on any system and is forbidden on
+#' CRAN. The directory is created by whatever actually writes a calibration.
+#'
+#' @return The RDS path where a manual calibration is persisted across
+#'   restarts.
+#' @examples
+#' custom_templates_path()
+#' @export
+custom_templates_path <- function() {
+  file.path(tools::R_user_dir("tanmai", "config"), "templates_custom.rds")
 }

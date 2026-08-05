@@ -4,7 +4,7 @@
 \alias{piece_svg_path}
 \title{Resolve the image file path for a piece symbol within a set}
 \usage{
-piece_svg_path(symbol, set_dir = app_sys("svg"))
+piece_svg_path(symbol, set_dir = system.file("svg", package = "tanmai"))
 }
 \arguments{
 \item{symbol}{A FEN piece letter (uppercase = white, lowercase = black).}

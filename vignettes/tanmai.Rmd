@@ -1,0 +1,151 @@
+---
+title: "Getting Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = FALSE)
+```
+
+Every other way of doing chess in R starts from a position you already have.
+tanmai starts one step earlier: it will read the position off a picture.
+
+```{r}
+library(tanmai)
+```
+
+## Four ways in, two shapes out
+
+There are four ways to get a position into R, and they all produce one of two
+data frames. Nothing downstream asks which one you used.
+
+| | gives you |
+| --- | --- |
+| `read_fen()` | a position |
+| `read_board()` | a position, plus how confident it is |
+| `read_pgn()` | a game |
+| `read_video()` | a game |
+
+A **position** is one row. A **game** is one row per ply:
+
+```{r}
+game <- read_pgn("1. e4 e5 2. Nf3 Nc6 3. Bb5 a6")
+names(game)
+#> [1] "ply" "move_no" "side" "san" "uci" "fen_before" "fen_after"
+#> [8] "cp" "cp_loss" "best_uci" "best_san" "class" "human_p"
+```
+
+They are plain data frames. `[`, dplyr and ggplot2 all work on them without
+knowing anything about chess, and that is the point.
+
+## Reading a board from a picture
+
+```{r}
+pos <- read_board("screenshot.png")
+pos$fen
+```
+
+This is the only input that can be *wrong*, so it is the only one that reports
+how sure it is:
+
+```{r}
+pos$confident
+#> TRUE
+```
+
+When `confident` is `FALSE`, the board did not match any installed piece set
+well - usually a Chess.com or custom theme. The FEN still comes back, because a
+guess you can correct beats no answer, but it is flagged rather than presented
+as fact.
+
+Out of the box the bundled set is recognised. `setup_piece_sets()` fetches the
+Lichess sets, after which most screenshots from most sites are read with
+nothing to configure.
+
+### If you already have the FEN
+
+Then recognition is a step to skip:
+
+```{r}
+read_fen("r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq -")
+```
+
+Four fields is fine. That is what chess sites actually copy to the clipboard,
+and the rest are filled in - though castling is deliberately *not* invented: a
+FEN that omits the field is not claiming those rights.
+
+## Reading a game from a recording
+
+```{r}
+game <- read_video("my-game.mp4")
+```
+
+A screen recording, an animated GIF, or a folder of screenshots all work. GIFs
+and folders need nothing installed; video formats need ffmpeg.
+
+A recording is full of frames that must not be believed - a piece halfway
+through a slide, the board mid-redraw, a piece picked up and put back down. A
+frame joins the game only when **exactly one legal sequence of moves explains
+it**, so those are discarded rather than turned into invented moves. What
+happened to each frame is recorded rather than hidden:
+
+```{r}
+attr(game, "ledger")
+#>       outcome frames
+#> 1     skipped     12
+#> 2    accepted     10
+#> 3 unexplained      1
+```
+
+## Judging a game
+
+Everything above works with no chess engine at all. Judging a game needs one:
+
+```{r}
+has_engine()
+```
+
+If that is `TRUE`:
+
+```{r}
+game <- evaluate(read_pgn(my_pgn))
+game[, c("ply", "san", "cp", "cp_loss", "class")]
+```
+
+`cp` is always from **White's** point of view, so the sign means the same thing
+down the whole column. `cp_loss` is from the **mover's**, because "you lost
+three pawns" only reads correctly that way for both colours.
+
+```{r}
+accuracy(game)
+#>   side moves  acpl accuracy inaccuracies mistakes blunders
+#> 1    w    23  58.6     84.3            3        2        2
+#> 2    b    22 513.5     77.5            3        2        3
+
+turning_points(game)
+```
+
+The accuracy figure uses Lichess's published formula, so it is comparable with
+the number they show. It converts each evaluation to an expected win percentage
+first, which is the point: half a pawn matters enormously in a level position
+and not at all when you are already winning by a rook.
+
+## Drawing
+
+```{r}
+plot(read_fen(fen)) # the board
+plot(game) # the evaluation across the game
+```
+
+## What it cannot do
+
+- **Whose turn it is** cannot be read from a still image, so `read_board()` has
+  to be told.
+- **En passant** is not inferred, and castling rights only when king and rook
+  are on their home squares.
+- A few Lichess piece sets are genuinely hard to tell apart because their own
+  pieces are nearly identical; `mono`, `letter` and `disguised` are excluded.

@@ -37,14 +37,13 @@ test_that("a finished position has a definite evaluation, not a missing one", {
   # The engine reports no principal variation for a position with no legal
   # move, which would leave the ply that *ended the game* blank - the single
   # most important row in the table.
-  ctx <- new_chess_context()
   mate <- "r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4"
-  expect_equal(position_status(ctx, mate), "checkmate")
+  expect_equal(position_status(mate), "checkmate")
   # Black king boxed in but not in check: a draw, and worth exactly 0, which
   # is a different answer from "mated" and from "unknown".
-  expect_equal(position_status(ctx, "7k/5Q2/6K1/8/8/8/8/8 b - - 0 1"), "stalemate")
+  expect_equal(position_status("7k/5Q2/6K1/8/8/8/8/8 b - - 0 1"), "stalemate")
   expect_equal(
-    position_status(ctx, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"),
+    position_status("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"),
     "ongoing"
   )
 })

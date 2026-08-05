@@ -4,27 +4,40 @@
 \name{tanmai-package}
 \alias{tanmai}
 \alias{tanmai-package}
-\title{tanmai: Chess Board Screenshot to Best Move}
+\title{tanmai: Read Chess Positions from Screenshots, FEN, PGN and Video}
 \description{
-A golem Shiny app that reads a chess board screenshot (drag-drop or clipboard
-paste), recognizes the position with template matching against multiple piece
-sets, and suggests the best move via a local Stockfish engine.
+Four ways to get a chess position into R, all producing the same two data
+frames: a one-row position, or a game with one row per ply. Nothing
+downstream asks which one you used, which is why they cost so little to add.
+}
+\details{
+\itemize{
+\item \code{\link[=read_board]{read_board()}} reads a screenshot of a board, and reports how confident it
+is rather than silently guessing.
+\item \code{\link[=read_fen]{read_fen()}} takes the position as text, filling in the fields chess sites
+habitually trim off the end.
+\item \code{\link[=read_pgn]{read_pgn()}} reads a game you already have.
+\item \code{\link[=read_video]{read_video()}} reads a game out of a recording of it being played.
+}
+
+With a Stockfish engine installed, \code{\link[=evaluate]{evaluate()}}, \code{\link[=accuracy]{accuracy()}} and
+\code{\link[=turning_points]{turning_points()}} say what the game was worth. Without one, everything that
+reads a position still works - the engine is optional at every level.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://tenmeh.github.io/tanmai/}
-  \item \url{https://github.com/tenmeh/tanmai}
-  \item Report bugs at \url{https://github.com/tenmeh/tanmai/issues}
+  \item \url{https://github.com/tenmeh/tanmai-r}
+  \item Report bugs at \url{https://github.com/tenmeh/tanmai-r/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: tenmeh \email{81738153+tenmeh@users.noreply.github.com}
+\strong{Maintainer}: Tanmay Chanda \email{81738153+tenmeh@users.noreply.github.com}
 
 Authors:
 \itemize{
-  \item tenmeh \email{81738153+tenmeh@users.noreply.github.com}
+  \item Tanmay Chanda \email{81738153+tenmeh@users.noreply.github.com}
 }
 
 }

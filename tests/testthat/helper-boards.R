@@ -30,5 +30,7 @@ squares_of <- function(symbols, size = 512) {
 
 #' The bundled cburnett library, as the only installed set
 cburnett_libs <- function() {
-  list(cburnett = load_template_library(app_sys("app", "templates.rds")))
+  list(cburnett = load_template_library(
+    system.file("templates.rds", package = "tanmai")
+  ))
 }

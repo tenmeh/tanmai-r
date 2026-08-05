@@ -19,7 +19,8 @@ width of one clickable band); or \code{NULL} if there is nothing to draw.
 }
 \description{
 The arithmetic behind the graph, with no drawing: where each point sits and
-what shapes join them. \code{\link[=eval_graph_svg]{eval_graph_svg()}} turns this into an SVG. They are
+what shapes join them. Rendering that into a picture is the caller's job.
+They are
 split so this layer stays free of any UI toolkit - see the note in
 \code{test-core-boundary.R}.
 }
