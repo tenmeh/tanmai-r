@@ -44,16 +44,19 @@ MAIA_WEIGHTS_BASE <-
 #' for local development, but fragile in a container that may run as an
 #' arbitrary uid whose home is not where the build put the weights.
 #'
-#' @return The directory path (created if needed).
+#' Deliberately does not create the directory. [find_lc0()] calls this merely to
+#' *look* for an installed binary, and creating a directory in the user's cache
+#' space as a side effect of reading would be wrong on any system and is
+#' forbidden on CRAN. [ensure_maia()] creates it before downloading.
+#'
+#' @return The directory path (which may not exist yet).
 maia_dir <- function() {
   configured <- cfg_env("MAIA_DIR")
-  dir <- if (nzchar(configured)) {
+  if (nzchar(configured)) {
     configured
   } else {
     file.path(tools::R_user_dir("tanmai", "cache"), "maia")
   }
-  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
-  dir
 }
 
 #' Locate the lc0 binary
@@ -136,6 +139,7 @@ nearest_installed_rating <- function(rating) {
 #' @param ratings Ratings whose weights should be fetched.
 #' @return `TRUE` if lc0 and at least one weights file are available.
 ensure_maia <- function(ratings = MAIA_RATINGS) {
+  dir.create(maia_dir(), recursive = TRUE, showWarnings = FALSE)
   for (rating in ratings) {
     dest <- maia_weights_path(rating)
     if (!file.exists(dest)) {

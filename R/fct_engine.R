@@ -13,11 +13,14 @@ STOCKFISH_ASSETS_MAC <- c(
 
 #' Directory where the downloaded Stockfish binary is cached
 #'
-#' @return The cache directory path (created if needed).
+#' Deliberately does not create the directory. [find_local_engine()] calls this
+#' merely to *look* in the cache, and creating a directory in the user's cache
+#' space as a side effect of reading would be wrong on any system and is
+#' forbidden on CRAN. [ensure_stockfish()] creates it before downloading.
+#'
+#' @return The cache directory path (which may not exist yet).
 stockfish_bin_dir <- function() {
-  dir <- tools::R_user_dir("tanmai", "cache")
-  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
-  dir
+  tools::R_user_dir("tanmai", "cache")
 }
 
 #' Find a Stockfish binary already present on this machine
@@ -75,6 +78,7 @@ ensure_stockfish <- function() {
   }
 
   dir <- stockfish_bin_dir()
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
   sysname <- Sys.info()[["sysname"]]
   assets <- if (.Platform$OS.type == "windows") {
     STOCKFISH_ASSETS_WINDOWS

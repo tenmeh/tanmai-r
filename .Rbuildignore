@@ -9,3 +9,5 @@
 ^design$
 ^docs$
 ^\.Rbuildignore$
+^\.claude$
+^cran-comments\.md$

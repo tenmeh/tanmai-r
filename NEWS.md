@@ -1,3 +1,22 @@
+# tanmai 0.1.2
+
+Groundwork for a CRAN submission. Nothing about the public API changes.
+
+* Reading a position no longer creates anything on disk. `stockfish_bin_dir()`,
+  `piece_sets_dir()` and `maia_dir()` each created their directory just to
+  answer *where would it be?*, and all three are called on ordinary read paths -
+  looking for an installed piece set, looking for a cached engine. So
+  `has_engine()` and `read_board()` both wrote into the user's cache, which CRAN
+  forbids. The path helpers are now side-effect-free, matching
+  `custom_templates_path()`, which had already been fixed for this reason; the
+  directory is created by whatever actually writes.
+
+* A test holds that line: it points `R_user_dir()` at an empty sandbox, runs the
+  read paths and the documented examples, and asserts nothing was created.
+
+* Added `cran-comments.md`, and kept the `.claude` working directory out of the
+  built tarball.
+
 # tanmai 0.1.1
 
 Catches the package up with fixes made in the app after the extraction. The

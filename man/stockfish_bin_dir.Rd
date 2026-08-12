@@ -7,8 +7,11 @@
 stockfish_bin_dir()
 }
 \value{
-The cache directory path (created if needed).
+The cache directory path (which may not exist yet).
 }
 \description{
-Directory where the downloaded Stockfish binary is cached
+Deliberately does not create the directory. \code{\link[=find_local_engine]{find_local_engine()}} calls this
+merely to \emph{look} in the cache, and creating a directory in the user's cache
+space as a side effect of reading would be wrong on any system and is
+forbidden on CRAN. \code{\link[=ensure_stockfish]{ensure_stockfish()}} creates it before downloading.
 }
