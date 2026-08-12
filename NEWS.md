@@ -1,3 +1,27 @@
+# tanmai 0.1.1
+
+Catches the package up with fixes made in the app after the extraction. The
+two had already drifted by about a hundred lines in under a week, which is the
+argument for the app depending on this package rather than carrying its own
+copy of the same code.
+
+* Every Maia network CSSLab published is now available, 1100 to 1900 in
+  hundreds, rather than three. The range cannot be widened - `maia-1000` and
+  `maia-2000` do not exist - only subdivided.
+
+* `nearest_installed_rating()` picks the closest network actually on disk, so a
+  rating with no downloaded weights degrades to the nearest one rather than
+  refusing to model a human at all. `human_model_available()` follows the same
+  rule.
+
+* The rating estimator keeps its three-network grid under its own constant.
+  Its accuracy figures were measured over those three, and its confidence rule
+  wants most of the posterior on a single network - a nine-way grid spreads
+  that mass across neighbours and would silence it.
+
+* `fen_complete()` gained a direct regression test, alongside the coverage it
+  already had through `read_fen()`.
+
 # tanmai 0.1.0
 
 First release as a standalone package, extracted from the Shiny app at
