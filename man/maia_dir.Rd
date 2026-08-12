@@ -7,11 +7,17 @@
 maia_dir()
 }
 \value{
-The directory path (created if needed).
+The directory path (which may not exist yet).
 }
 \description{
 Honours \code{TANMAI_MAIA_DIR}, which container images set to a fixed path.
 The default resolves under the user cache, which depends on \code{HOME} - fine
 for local development, but fragile in a container that may run as an
 arbitrary uid whose home is not where the build put the weights.
+}
+\details{
+Deliberately does not create the directory. \code{\link[=find_lc0]{find_lc0()}} calls this merely to
+\emph{look} for an installed binary, and creating a directory in the user's cache
+space as a side effect of reading would be wrong on any system and is
+forbidden on CRAN. \code{\link[=ensure_maia]{ensure_maia()}} creates it before downloading.
 }

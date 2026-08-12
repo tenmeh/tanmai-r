@@ -70,11 +70,15 @@ piece_set_ext <- function(dir) {
 
 #' Cache directory for downloaded piece sets
 #'
-#' @return The piece-sets cache directory path (created if needed).
+#' Deliberately does not create the directory. [piece_set_path()] calls this on
+#' every recognition to *look* for an installed set, and creating a directory in
+#' the user's cache space as a side effect of reading would be wrong on any
+#' system and is forbidden on CRAN. [fetch_piece_set()] and
+#' [save_template_library()] create it when they actually write.
+#'
+#' @return The piece-sets cache directory path (which may not exist yet).
 piece_sets_dir <- function() {
-  dir <- file.path(tools::R_user_dir("tanmai", "cache"), "piece_sets")
-  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
-  dir
+  file.path(tools::R_user_dir("tanmai", "cache"), "piece_sets")
 }
 
 #' Locate the directory holding a set's 12 SVGs

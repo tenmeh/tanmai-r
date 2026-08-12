@@ -78,6 +78,10 @@ load_template_library <- function(path) {
 #' @param path Destination path.
 #' @return Invisibly, the result of [saveRDS()].
 save_template_library <- function(lib, path) {
+  # This is the only writer of a template library, so it is where the cache or
+  # config directory gets created - the path helpers stay side-effect-free so
+  # that merely loading a library cannot create anything.
+  dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
   saveRDS(list(pieces = lib$pieces, empty_threshold = lib$empty_threshold), path)
 }
 

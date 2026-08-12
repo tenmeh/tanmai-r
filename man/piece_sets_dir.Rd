@@ -7,8 +7,12 @@
 piece_sets_dir()
 }
 \value{
-The piece-sets cache directory path (created if needed).
+The piece-sets cache directory path (which may not exist yet).
 }
 \description{
-Cache directory for downloaded piece sets
+Deliberately does not create the directory. \code{\link[=piece_set_path]{piece_set_path()}} calls this on
+every recognition to \emph{look} for an installed set, and creating a directory in
+the user's cache space as a side effect of reading would be wrong on any
+system and is forbidden on CRAN. \code{\link[=fetch_piece_set]{fetch_piece_set()}} and
+\code{\link[=save_template_library]{save_template_library()}} create it when they actually write.
 }

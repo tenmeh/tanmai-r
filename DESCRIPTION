@@ -1,6 +1,6 @@
 Package: tanmai
 Title: Read Chess Positions from Screenshots, FEN, PGN and Video
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: person("Tanmay", "Chanda", email = "81738153+tenmeh@users.noreply.github.com", role = c("aut", "cre"))
 Description: Reads a chess position from a screenshot of a board, a FEN
     string, a PGN file, or a recording of a game being played, and returns it
@@ -9,7 +9,7 @@ Description: Reads a chess position from a screenshot of a board, a FEN
     guessing. With a 'Stockfish' engine installed, games can additionally be
     evaluated, scored for accuracy, and searched for the moves that decided
     them; without one, everything that reads a position still works.
-URL: https://github.com/tenmeh/tanmai-r
+URL: https://github.com/tenmeh/tanmai-r, https://tenmeh.github.io/tanmai-r/
 BugReports: https://github.com/tenmeh/tanmai-r/issues
 License: GPL-3
 Language: en-US
