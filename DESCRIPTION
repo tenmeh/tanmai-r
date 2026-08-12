@@ -9,7 +9,7 @@ Description: Reads a chess position from a screenshot of a board, a FEN
     guessing. With a 'Stockfish' engine installed, games can additionally be
     evaluated, scored for accuracy, and searched for the moves that decided
     them; without one, everything that reads a position still works.
-URL: https://github.com/tenmeh/tanmai-r
+URL: https://github.com/tenmeh/tanmai-r, https://tenmeh.github.io/tanmai-r/
 BugReports: https://github.com/tenmeh/tanmai-r/issues
 License: GPL-3
 Language: en-US

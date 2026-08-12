@@ -1,0 +1,248 @@
+url: https://tenmeh.github.io/tanmai-r/
+
+template:
+  bootstrap: 5
+  light-switch: true
+  default-theme: light
+  bslib:
+    # The same accent as the app's own docs, so the package and the thing built
+    # on it do not look like different products.
+    primary: "#1f9d61"
+    # Set as plain Sass variables rather than through bslib's font helpers:
+    # Poppins is served from pkgdown/assets/fonts by @font-face in extra.css, so
+    # there is nothing for bslib to fetch or bundle.
+    font-family-base: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+    headings-font-family: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-family-monospace: "'JetBrains Mono', 'SF Mono', 'Cascadia Mono', Consolas, monospace"
+    headings-font-weight: 600
+    border-radius: "0.6rem"
+
+home:
+  title: Read chess positions into R
+  description: >
+    Four ways to get a chess position into R - a screenshot, a FEN string, a PGN
+    file, or a recording - all returning the same two tidy data frames.
+  sidebar:
+    structure: [links, license, citation, authors, dev]
+    components:
+      links:
+        title: Links
+        text: |
+          [The Shiny app built on this](https://tenmeh.github.io/tanmai/)
+
+navbar:
+  structure:
+    left: [intro, reference, news]
+    right: [search, lightswitch, github]
+  components:
+    intro:
+      text: Getting Started
+      href: articles/tanmai.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    news:
+      text: Changelog
+      href: news/index.html
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/tenmeh/tanmai-r
+      aria-label: GitHub repository
+
+reference:
+  - title: Reading a position
+    desc: >
+      The four ways in. Each returns one of the two shapes below, and nothing
+      downstream asks which one you used.
+    contents:
+      - read_fen
+      - read_board
+      - read_pgn
+      - read_video
+
+  - title: The two shapes
+    desc: >
+      A position is one row; a game is one row per ply. Both are plain data
+      frames, so `[`, dplyr and ggplot2 work on them without knowing any chess.
+    contents:
+      - tanmai_position
+      - tanmai_game
+
+  - title: Judging a game
+    desc: >
+      These need a Stockfish engine. Everything above works without one.
+    contents:
+      - has_engine
+      - evaluate
+      - accuracy
+      - turning_points
+
+  - title: Drawing
+    desc: The board, and the evaluation across a game.
+    contents:
+      - plot.tanmai_position
+      - render_position
+
+  - title: Working with FEN
+    desc: >
+      Completing a four-field FEN, turning one into piece symbols, and asking
+      whether a position is check, mate or stalemate.
+    contents:
+      - fen_complete
+      - fen_to_symbols
+      - position_status
+
+  - title: Piece sets
+    desc: >
+      Recognition matches a board against installed piece sets. This is where a
+      calibration of your own is kept.
+    contents:
+      - custom_templates_path
+
+  - title: The package
+    contents:
+      - tanmai-package
+
+  # Everything below is internal: documented because the pipeline is worth
+  # following, but not exported and not a stable interface. pkgdown requires
+  # every topic to appear exactly once, and none of these carry
+  # @keywords internal, so they are listed rather than swept up by a selector.
+
+  - title: "Internal: recognition"
+    desc: >
+      Screenshot to FEN - cropping and splitting the image, matching squares
+      against template libraries, working out which way round the board is, and
+      assembling a position.
+    contents:
+      - recognize_position
+      - prepare_board
+      - autocrop_board
+      - split_board
+      - split_squares
+      - to_gray_matrix
+      - label_ink
+      - classify_square
+      - recognize_symbols
+      - recognize_symbols_auto
+      - template_matrix
+      - normalize_vec
+      - sq_background
+      - sq_core
+      - sq_energy
+      - sq_idx
+      - build_from_start_position
+      - load_template_library
+      - load_all_template_libraries
+      - save_template_library
+      - build_fen
+      - grid_to_placement
+      - infer_castling
+      - resolve_orientation
+      - detect_flip
+      - detect_flip_piece_mass
+      - detect_flip_start_brightness
+      - fix_template_colour_swap
+      - resolve_calibration_flip
+      - squares_mean_brightness
+      - piece_svg_path
+      - read_piece_image
+
+  - title: "Internal: piece sets"
+    desc: >
+      The bundled cburnett set, the Lichess sets fetched on demand, and the
+      template libraries calibrated from them.
+    contents:
+      - piece_set_manifest
+      - available_piece_sets
+      - piece_set_path
+      - piece_set_ext
+      - piece_sets_dir
+      - fetch_piece_set
+      - setup_piece_sets
+      - build_set_templates
+      - set_templates_path
+
+  - title: "Internal: engines"
+    desc: >
+      Stockfish over UCI, both one-shot and as a session that keeps searching.
+    contents:
+      - best_move_uci
+      - ensure_stockfish
+      - find_local_engine
+      - stockfish_bin_dir
+      - wait_for_line
+      - parse_info_line
+      - parse_uci_score
+      - format_score
+      - eval_bar_pct
+      - engine_session_start
+      - engine_session_analyse
+      - engine_session_poll
+      - engine_session_eval
+      - engine_session_stop
+
+  - title: "Internal: positions, legality and SAN"
+    desc: The chess.js bridge, and the FEN accessors built on it.
+    contents:
+      - new_chess_context
+      - validate_fen
+      - is_valid_fen
+      - legal_moves
+      - fen_after_move
+      - fen_move_to_san
+      - fen_placement
+      - fen_with_turn
+      - fen_turn
+      - same_position
+
+  - title: "Internal: the human model"
+    desc: >
+      Maia run through lc0, and what it is used for - scoring how likely a
+      mistake is, and inferring a player's strength from what they played.
+    contents:
+      - maia_dir
+      - maia_weights_path
+      - match_maia_rating
+      - nearest_installed_rating
+      - find_lc0
+      - ensure_maia
+      - human_model_available
+      - maia_session_start
+      - maia_session_stop
+      - human_move_probabilities
+      - parse_policy_lines
+      - blunder_risk
+      - evaluate_moves
+      - score_to_cp
+      - trappiness
+      - radar_arrow_moves
+      - maia_pool_start
+      - maia_pool_stop
+      - move_log_likelihood
+      - rating_posterior
+      - estimate_rating
+      - rating_estimate_is_confident
+
+  - title: "Internal: following a game"
+    desc: >
+      Turning a stream of frames into a game - the legality gate that decides
+      what counts as a move, and the summaries built on top of it.
+    contents:
+      - game_new
+      - game_apply_move
+      - game_current_fen
+      - game_ply
+      - game_accept
+      - track_observation
+      - find_move_paths
+      - move_quality
+      - game_move_losses
+      - game_turning_points
+      - game_from_pgn
+      - pgn_summary
+      - format_loss
+      - eval_graph_geometry
+
+  - title: "Internal: configuration"
+    contents:
+      - cfg_env

@@ -17,6 +17,11 @@ Groundwork for a CRAN submission. Nothing about the public API changes.
 * Added `cran-comments.md`, and kept the `.claude` working directory out of the
   built tarball.
 
+* A pkgdown site at <https://tenmeh.github.io/tanmai-r/>, built and deployed by
+  CI. The reference index leads with the four ways in and the two shapes they
+  produce; the ninety-odd internal helpers are documented but kept below that,
+  so the page opens on the public API rather than on the pipeline.
+
 # tanmai 0.1.1
 
 Catches the package up with fixes made in the app after the extraction. The
