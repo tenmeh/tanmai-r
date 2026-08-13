@@ -1,0 +1,9 @@
+pandoc: 3.8.3
+pkgdown: 2.2.1
+pkgdown_sha: ~
+articles:
+  tanmai: tanmai.html
+last_built: 2026-08-13T05:17Z
+urls:
+  reference: https://tenmeh.github.io/tanmai-r/reference
+  article: https://tenmeh.github.io/tanmai-r/articles

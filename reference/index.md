@@ -1,0 +1,353 @@
+# Package index
+
+## Reading a position
+
+The four ways in. Each returns one of the two shapes below, and nothing
+downstream asks which one you used.
+
+- [`read_fen()`](https://tenmeh.github.io/tanmai-r/reference/read_fen.md)
+  : Read a position from a FEN string
+- [`read_board()`](https://tenmeh.github.io/tanmai-r/reference/read_board.md)
+  : Read a position from a screenshot of a board
+- [`read_pgn()`](https://tenmeh.github.io/tanmai-r/reference/read_pgn.md)
+  : Read a game from PGN
+- [`read_video()`](https://tenmeh.github.io/tanmai-r/reference/read_video.md)
+  : Read a game from a recording of it being played
+
+## The two shapes
+
+A position is one row; a game is one row per ply. Both are plain data
+frames, so `[`, dplyr and ggplot2 work on them without knowing any
+chess.
+
+- [`tanmai_position`](https://tenmeh.github.io/tanmai-r/reference/tanmai_position.md)
+  : A chess position
+- [`tanmai_game`](https://tenmeh.github.io/tanmai-r/reference/tanmai_game.md)
+  : A chess game
+
+## Judging a game
+
+These need a Stockfish engine. Everything above works without one.
+
+- [`has_engine()`](https://tenmeh.github.io/tanmai-r/reference/has_engine.md)
+  : Is a chess engine available?
+- [`evaluate()`](https://tenmeh.github.io/tanmai-r/reference/evaluate.md)
+  : Evaluate a position or a game with a chess engine
+- [`accuracy()`](https://tenmeh.github.io/tanmai-r/reference/accuracy.md)
+  : How accurately each player played
+- [`turning_points()`](https://tenmeh.github.io/tanmai-r/reference/turning_points.md)
+  : Where the game turned
+
+## Drawing
+
+The board, and the evaluation across a game.
+
+- [`plot(`*`<tanmai_position>`*`)`](https://tenmeh.github.io/tanmai-r/reference/plot.tanmai_position.md)
+  [`plot(`*`<tanmai_game>`*`)`](https://tenmeh.github.io/tanmai-r/reference/plot.tanmai_position.md)
+  : Draw a position or a game
+- [`render_position()`](https://tenmeh.github.io/tanmai-r/reference/render_position.md)
+  : Render an 8x8 board with pieces placed from a symbol grid
+
+## Working with FEN
+
+Completing a four-field FEN, turning one into piece symbols, and asking
+whether a position is check, mate or stalemate.
+
+- [`fen_complete()`](https://tenmeh.github.io/tanmai-r/reference/fen_complete.md)
+  : Fill in the FEN fields people leave off
+- [`fen_to_symbols()`](https://tenmeh.github.io/tanmai-r/reference/fen_to_symbols.md)
+  : Expand a FEN placement field into 64 symbols
+- [`position_status()`](https://tenmeh.github.io/tanmai-r/reference/position_status.md)
+  : Whether a position is over, and how
+
+## Piece sets
+
+Recognition matches a board against installed piece sets. This is where
+a calibration of your own is kept.
+
+- [`custom_templates_path()`](https://tenmeh.github.io/tanmai-r/reference/custom_templates_path.md)
+  : Path for user-calibrated ("custom") templates
+
+## The package
+
+- [`tanmai`](https://tenmeh.github.io/tanmai-r/reference/tanmai-package.md)
+  [`tanmai-package`](https://tenmeh.github.io/tanmai-r/reference/tanmai-package.md)
+  : tanmai: Read Chess Positions from Screenshots, FEN, PGN and Video
+
+## Internal: recognition
+
+Screenshot to FEN - cropping and splitting the image, matching squares
+against template libraries, working out which way round the board is,
+and assembling a position.
+
+- [`recognize_position()`](https://tenmeh.github.io/tanmai-r/reference/recognize_position.md)
+  : Recognize a board screenshot end-to-end
+
+- [`prepare_board()`](https://tenmeh.github.io/tanmai-r/reference/prepare_board.md)
+  : Normalize a screenshot to an exact board-sized RGB image
+
+- [`autocrop_board()`](https://tenmeh.github.io/tanmai-r/reference/autocrop_board.md)
+  : Best-effort crop to the board by trimming near-uniform margins
+
+- [`split_board()`](https://tenmeh.github.io/tanmai-r/reference/split_board.md)
+  : Split a normalized board into 64 square images
+
+- [`split_squares()`](https://tenmeh.github.io/tanmai-r/reference/split_squares.md)
+  : Prepare and split a screenshot into 64 square images in one step
+
+- [`to_gray_matrix()`](https://tenmeh.github.io/tanmai-r/reference/to_gray_matrix.md)
+  : Convert a magick image to a grayscale integer matrix
+
+- [`label_ink()`](https://tenmeh.github.io/tanmai-r/reference/label_ink.md)
+  : Foreground ink in the rank-label strip of a left-edge square
+
+- [`classify_square()`](https://tenmeh.github.io/tanmai-r/reference/classify_square.md)
+  : Classify one square against a single template library
+
+- [`recognize_symbols()`](https://tenmeh.github.io/tanmai-r/reference/recognize_symbols.md)
+  : Classify all 64 squares against a single template library
+
+- [`recognize_symbols_auto()`](https://tenmeh.github.io/tanmai-r/reference/recognize_symbols_auto.md)
+  : Recognize 64 squares against all available sets at once
+
+- [`template_matrix()`](https://tenmeh.github.io/tanmai-r/reference/template_matrix.md)
+  : Stack several libraries' normalized templates into one matrix
+
+- [`normalize_vec()`](https://tenmeh.github.io/tanmai-r/reference/normalize_vec.md)
+  : Zero-mean, unit-norm flatten of a matrix
+
+- [`sq_background()`](https://tenmeh.github.io/tanmai-r/reference/sq_background.md)
+  : Estimate a square's background level from its four corners
+
+- [`sq_core()`](https://tenmeh.github.io/tanmai-r/reference/sq_core.md)
+  : Background-subtracted central region of a square
+
+- [`sq_energy()`](https://tenmeh.github.io/tanmai-r/reference/sq_energy.md)
+  : Mean absolute energy of a square core
+
+- [`sq_idx()`](https://tenmeh.github.io/tanmai-r/reference/sq_idx.md) :
+  Map a 0-indexed board row/column to a 1-indexed symbol-vector position
+
+- [`build_from_start_position()`](https://tenmeh.github.io/tanmai-r/reference/build_from_start_position.md)
+  : Calibrate a template library from a starting-position board
+
+- [`load_template_library()`](https://tenmeh.github.io/tanmai-r/reference/load_template_library.md)
+  : Load a template library from an RDS file
+
+- [`load_all_template_libraries()`](https://tenmeh.github.io/tanmai-r/reference/load_all_template_libraries.md)
+  : Load every available template library
+
+- [`save_template_library()`](https://tenmeh.github.io/tanmai-r/reference/save_template_library.md)
+  : Save a template library to an RDS file
+
+- [`build_fen()`](https://tenmeh.github.io/tanmai-r/reference/build_fen.md)
+  : Build a full FEN string from recognized symbols
+
+- [`grid_to_placement()`](https://tenmeh.github.io/tanmai-r/reference/grid_to_placement.md)
+  : Convert a 64-symbol grid to a FEN piece-placement field
+
+- [`infer_castling()`](https://tenmeh.github.io/tanmai-r/reference/infer_castling.md)
+  : Infer castling rights from piece placement
+
+- [`resolve_orientation()`](https://tenmeh.github.io/tanmai-r/reference/resolve_orientation.md)
+  : Resolve board orientation
+
+- [`detect_flip()`](https://tenmeh.github.io/tanmai-r/reference/detect_flip.md)
+  : Detect board orientation from rank labels along the left edge
+
+- [`detect_flip_piece_mass()`](https://tenmeh.github.io/tanmai-r/reference/detect_flip_piece_mass.md)
+  : Detect orientation from where each army sits
+
+- [`detect_flip_start_brightness()`](https://tenmeh.github.io/tanmai-r/reference/detect_flip_start_brightness.md)
+  :
+
+  Detect orientation of a *starting position* from piece brightness
+
+- [`fix_template_colour_swap()`](https://tenmeh.github.io/tanmai-r/reference/fix_template_colour_swap.md)
+  : Assert (and if necessary repair) the white/black brightness
+  invariant
+
+- [`resolve_calibration_flip()`](https://tenmeh.github.io/tanmai-r/reference/resolve_calibration_flip.md)
+  : Resolve the orientation of a calibration (starting-position)
+  screenshot
+
+- [`squares_mean_brightness()`](https://tenmeh.github.io/tanmai-r/reference/squares_mean_brightness.md)
+  : Mean background-subtracted brightness of the pieces in a set of
+  squares
+
+- [`piece_svg_path()`](https://tenmeh.github.io/tanmai-r/reference/piece_svg_path.md)
+  : Resolve the image file path for a piece symbol within a set
+
+- [`read_piece_image()`](https://tenmeh.github.io/tanmai-r/reference/read_piece_image.md)
+  : Rasterize one piece image at a given square size
+
+## Internal: piece sets
+
+The bundled cburnett set, the Lichess sets fetched on demand, and the
+template libraries calibrated from them.
+
+- [`piece_set_manifest()`](https://tenmeh.github.io/tanmai-r/reference/piece_set_manifest.md)
+  : Manifest of every Lichess piece set
+- [`available_piece_sets()`](https://tenmeh.github.io/tanmai-r/reference/available_piece_sets.md)
+  : Names of all piece sets available locally
+- [`piece_set_path()`](https://tenmeh.github.io/tanmai-r/reference/piece_set_path.md)
+  : Locate the directory holding a set's 12 SVGs
+- [`piece_set_ext()`](https://tenmeh.github.io/tanmai-r/reference/piece_set_ext.md)
+  : Find which file extension a downloaded piece set uses
+- [`piece_sets_dir()`](https://tenmeh.github.io/tanmai-r/reference/piece_sets_dir.md)
+  : Cache directory for downloaded piece sets
+- [`fetch_piece_set()`](https://tenmeh.github.io/tanmai-r/reference/fetch_piece_set.md)
+  : Download one piece set's 12 SVGs into the cache
+- [`setup_piece_sets()`](https://tenmeh.github.io/tanmai-r/reference/setup_piece_sets.md)
+  : Fetch and build templates for every set in the manifest
+- [`build_set_templates()`](https://tenmeh.github.io/tanmai-r/reference/build_set_templates.md)
+  : Build and cache a set's template library
+- [`set_templates_path()`](https://tenmeh.github.io/tanmai-r/reference/set_templates_path.md)
+  : Path where a set's calibrated template library lives
+
+## Internal: engines
+
+Stockfish over UCI, both one-shot and as a session that keeps searching.
+
+- [`best_move_uci()`](https://tenmeh.github.io/tanmai-r/reference/best_move_uci.md)
+  : Ask Stockfish for the best move in a position
+- [`ensure_stockfish()`](https://tenmeh.github.io/tanmai-r/reference/ensure_stockfish.md)
+  : Return a path to a Stockfish binary, downloading it on first use
+- [`find_local_engine()`](https://tenmeh.github.io/tanmai-r/reference/find_local_engine.md)
+  : Find a Stockfish binary already present on this machine
+- [`stockfish_bin_dir()`](https://tenmeh.github.io/tanmai-r/reference/stockfish_bin_dir.md)
+  : Directory where the downloaded Stockfish binary is cached
+- [`wait_for_line()`](https://tenmeh.github.io/tanmai-r/reference/wait_for_line.md)
+  : Read engine output until a line starting with a given prefix appears
+- [`parse_info_line()`](https://tenmeh.github.io/tanmai-r/reference/parse_info_line.md)
+  : Parse one UCI info line into a principal-variation record
+- [`parse_uci_score()`](https://tenmeh.github.io/tanmai-r/reference/parse_uci_score.md)
+  : Parse a UCI score from an engine info line
+- [`format_score()`](https://tenmeh.github.io/tanmai-r/reference/format_score.md)
+  : Format an engine score for display
+- [`eval_bar_pct()`](https://tenmeh.github.io/tanmai-r/reference/eval_bar_pct.md)
+  : Convert a score to a 0-100 eval-bar percentage (White's share)
+- [`engine_session_start()`](https://tenmeh.github.io/tanmai-r/reference/engine_session_start.md)
+  : Start a persistent Stockfish process
+- [`engine_session_analyse()`](https://tenmeh.github.io/tanmai-r/reference/engine_session_analyse.md)
+  : Point a persistent engine at a position and start an infinite search
+- [`engine_session_poll()`](https://tenmeh.github.io/tanmai-r/reference/engine_session_poll.md)
+  : Drain pending engine output and fold it into the session state
+- [`engine_session_eval()`](https://tenmeh.github.io/tanmai-r/reference/engine_session_eval.md)
+  : Evaluate one position on a persistent engine, waiting for the result
+- [`engine_session_stop()`](https://tenmeh.github.io/tanmai-r/reference/engine_session_stop.md)
+  : Stop a persistent engine session
+
+## Internal: positions, legality and SAN
+
+The chess.js bridge, and the FEN accessors built on it.
+
+- [`new_chess_context()`](https://tenmeh.github.io/tanmai-r/reference/new_chess_context.md)
+  : Create a chess.js V8 context
+- [`validate_fen()`](https://tenmeh.github.io/tanmai-r/reference/validate_fen.md)
+  : Validate a FEN via chess.js
+- [`is_valid_fen()`](https://tenmeh.github.io/tanmai-r/reference/is_valid_fen.md)
+  : Test whether a FEN is legal
+- [`legal_moves()`](https://tenmeh.github.io/tanmai-r/reference/legal_moves.md)
+  : List every legal move in a position, in UCI
+- [`fen_after_move()`](https://tenmeh.github.io/tanmai-r/reference/fen_after_move.md)
+  : The position that results from playing a move
+- [`fen_move_to_san()`](https://tenmeh.github.io/tanmai-r/reference/fen_move_to_san.md)
+  : Convert a UCI move to SAN for a position
+- [`fen_placement()`](https://tenmeh.github.io/tanmai-r/reference/fen_placement.md)
+  : The piece-placement field of a FEN
+- [`fen_with_turn()`](https://tenmeh.github.io/tanmai-r/reference/fen_with_turn.md)
+  : Rewrite a FEN's side to move
+- [`fen_turn()`](https://tenmeh.github.io/tanmai-r/reference/fen_turn.md)
+  : Which side is to move in a FEN
+- [`same_position()`](https://tenmeh.github.io/tanmai-r/reference/same_position.md)
+  : Test whether two FENs describe the same position to play from
+
+## Internal: the human model
+
+Maia run through lc0, and what it is used for - scoring how likely a
+mistake is, and inferring a player’s strength from what they played.
+
+- [`maia_dir()`](https://tenmeh.github.io/tanmai-r/reference/maia_dir.md)
+  : Directory holding lc0 and the Maia weight files
+- [`maia_weights_path()`](https://tenmeh.github.io/tanmai-r/reference/maia_weights_path.md)
+  : Path to a Maia weights file for a rating
+- [`match_maia_rating()`](https://tenmeh.github.io/tanmai-r/reference/match_maia_rating.md)
+  : Snap a requested rating to the nearest available Maia network
+- [`nearest_installed_rating()`](https://tenmeh.github.io/tanmai-r/reference/nearest_installed_rating.md)
+  : Nearest Maia network whose weights are actually on disk
+- [`find_lc0()`](https://tenmeh.github.io/tanmai-r/reference/find_lc0.md)
+  : Locate the lc0 binary
+- [`ensure_maia()`](https://tenmeh.github.io/tanmai-r/reference/ensure_maia.md)
+  : Download lc0 and the Maia weights if they are not already present
+- [`human_model_available()`](https://tenmeh.github.io/tanmai-r/reference/human_model_available.md)
+  : Is a human model usable right now?
+- [`maia_session_start()`](https://tenmeh.github.io/tanmai-r/reference/maia_session_start.md)
+  : Start a persistent Maia session
+- [`maia_session_stop()`](https://tenmeh.github.io/tanmai-r/reference/maia_session_stop.md)
+  : Stop a Maia session
+- [`human_move_probabilities()`](https://tenmeh.github.io/tanmai-r/reference/human_move_probabilities.md)
+  : Probability a modelled human plays each legal move
+- [`parse_policy_lines()`](https://tenmeh.github.io/tanmai-r/reference/parse_policy_lines.md)
+  : Parse lc0's verbose move statistics into per-move probabilities
+- [`blunder_risk()`](https://tenmeh.github.io/tanmai-r/reference/blunder_risk.md)
+  : Assess how likely a human is to go wrong in a position
+- [`evaluate_moves()`](https://tenmeh.github.io/tanmai-r/reference/evaluate_moves.md)
+  : Evaluate a specific set of moves in one search
+- [`score_to_cp()`](https://tenmeh.github.io/tanmai-r/reference/score_to_cp.md)
+  : Convert a UCI score into a single centipawn number
+- [`trappiness()`](https://tenmeh.github.io/tanmai-r/reference/trappiness.md)
+  : Rate moves by how likely they are to induce an opponent mistake
+- [`radar_arrow_moves()`](https://tenmeh.github.io/tanmai-r/reference/radar_arrow_moves.md)
+  : Rank your moves by how likely they are to induce an opponent error
+- [`maia_pool_start()`](https://tenmeh.github.io/tanmai-r/reference/maia_pool_start.md)
+  : Start one Maia session per rating
+- [`maia_pool_stop()`](https://tenmeh.github.io/tanmai-r/reference/maia_pool_stop.md)
+  : Stop a pool of Maia sessions
+- [`move_log_likelihood()`](https://tenmeh.github.io/tanmai-r/reference/move_log_likelihood.md)
+  : Log-probability of one played move under each rating's network
+- [`rating_posterior()`](https://tenmeh.github.io/tanmai-r/reference/rating_posterior.md)
+  : Posterior over ratings from accumulated log-likelihoods
+- [`estimate_rating()`](https://tenmeh.github.io/tanmai-r/reference/estimate_rating.md)
+  : Estimate an opponent's rating from the moves they played
+- [`rating_estimate_is_confident()`](https://tenmeh.github.io/tanmai-r/reference/rating_estimate_is_confident.md)
+  : Is a rating estimate strong enough to act on?
+
+## Internal: following a game
+
+Turning a stream of frames into a game - the legality gate that decides
+what counts as a move, and the summaries built on top of it.
+
+- [`game_new()`](https://tenmeh.github.io/tanmai-r/reference/game_new.md)
+  : Start a new tracked game
+- [`game_apply_move()`](https://tenmeh.github.io/tanmai-r/reference/game_apply_move.md)
+  : Play a move onto a tracked game
+- [`game_current_fen()`](https://tenmeh.github.io/tanmai-r/reference/game_current_fen.md)
+  : The position a tracked game currently stands at
+- [`game_ply()`](https://tenmeh.github.io/tanmai-r/reference/game_ply.md)
+  : Number of plies played in a tracked game
+- [`game_accept()`](https://tenmeh.github.io/tanmai-r/reference/game_accept.md)
+  : Fold an accepted observation into the game
+- [`track_observation()`](https://tenmeh.github.io/tanmai-r/reference/track_observation.md)
+  : Decide what a freshly recognized position means for a tracked game
+- [`find_move_paths()`](https://tenmeh.github.io/tanmai-r/reference/find_move_paths.md)
+  : Every short legal path from one position to a target placement
+- [`move_quality()`](https://tenmeh.github.io/tanmai-r/reference/move_quality.md)
+  : Classify how bad a move was
+- [`game_move_losses()`](https://tenmeh.github.io/tanmai-r/reference/game_move_losses.md)
+  : What each move cost the player who made it
+- [`game_turning_points()`](https://tenmeh.github.io/tanmai-r/reference/game_turning_points.md)
+  : The moves where the game turned
+- [`game_from_pgn()`](https://tenmeh.github.io/tanmai-r/reference/game_from_pgn.md)
+  : Build a tracked game from PGN
+- [`pgn_summary()`](https://tenmeh.github.io/tanmai-r/reference/pgn_summary.md)
+  : A one-line description of an imported game
+- [`format_loss()`](https://tenmeh.github.io/tanmai-r/reference/format_loss.md)
+  : Describe what a move cost, in words a player would use
+- [`eval_graph_geometry()`](https://tenmeh.github.io/tanmai-r/reference/eval_graph_geometry.md)
+  : Geometry for the evaluation graph
+
+## Internal: configuration
+
+- [`cfg_env()`](https://tenmeh.github.io/tanmai-r/reference/cfg_env.md)
+  : Read a configuration setting from the environment
